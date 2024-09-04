@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Chat App </title>
+    <script>
+        function joinRoom () {
+            const roomCode = document.querySelector('#room-code').value.trim();
+            if (roomCode) window.location.href = `/chat/${roomCode}`;
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <p> Enter the room code: </p>
+        <div>
+            <input id="room-code" type="text" placeholder="Room Code">
+            <button> Join room </button>
+        </div>
+    </div>
+</body>
+</html>

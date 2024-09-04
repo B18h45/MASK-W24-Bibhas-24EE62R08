@@ -1,0 +1,152 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title> Anime Quiz </title>
+	<style>
+		#question_field {
+			background-color: yellow;
+			margin: auto;
+			max-width: 50%; 
+			width: max-content;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			padding: 30px 20px;
+			gap: 5px
+		}
+		img {
+			width: 100px;
+			height: 100px;
+		}
+		.spoiler {
+			background-color: black;
+			color: black;
+		}
+		.spoiler.opened {
+			background-color: transparent;
+		}
+		#navigation_buttons_container {
+			margin: 20px auto;
+			width: max-content;
+			display: flex;
+			flex-direction: row;
+			gap: 20px;
+		}
+		body > div {
+			margin: 10px auto;
+			width: max-content;
+		}
+		body > table {
+			margin: 10px auto;
+			gap: 0;
+			border-spacing: 0;
+			border: solid 1px;
+		}
+		body > table th, body > table td {
+			border: solid 1px;
+			padding: 2px;
+			gap: 0;
+
+		}
+	</style>
+	<script>
+		const NUMBER_OF_QUESTIONS = 10;
+		const QUESTIONS = [];
+		const RESULTS = Array(NUMBER_OF_QUESTIONS).fill('');
+		
+		let current_question = 1;
+	</script>
+	<script>
+		function show_question ({ no, image, hint, solution }) {
+			const res = RESULTS[current_question - 1];
+			document.querySelector('#question_field').innerHTML = `
+				<div> <b>Question No.</b> ${no} </div>
+				<div><img src="./images/${image}" alt=${image.slice(0, -4)}></div>
+				<p><b>Hint:</b> <span class="spoiler ${res && ' opened'}" onclick="this.classList.add('opened')" >${hint}</span>
+				<div style="display: flex; flex-direction: column; gap: 5px;">
+					<input id="answer_field" placeholder="${res || 'Guess'}" ${ res && 'disabled' }>
+					<button id="submit_button" onclick="submit()" ${ res && 'disabled' }
+						class="${res && (res.toLowerCase() === solution.toLowerCase() ? 'correct' : 'incorrect' )}"
+					> 
+						${ (res && (res.toLowerCase() === solution.toLowerCase() ? 'Correct' : 'Incorrect' )) || 'Submit' }
+					</button>
+				</div>
+			`;
+		}
+
+		function previous_question () {
+			document.querySelector('#next_question').disabled = false;
+			current_question = Math.max(current_question - 1, 1);
+			if (current_question === 1) document.querySelector('#previous_question').disabled = true;
+			show_question(QUESTIONS[current_question - 1]);
+		}
+
+		function next_question () {
+			document.querySelector('#previous_question').disabled = false;
+			current_question = Math.min(current_question + 1, NUMBER_OF_QUESTIONS);
+			if (current_question === NUMBER_OF_QUESTIONS) document.querySelector('#next_question').disabled = true;
+			show_question(QUESTIONS[current_question - 1]);
+		}
+
+		function submit () {
+			const res = document.querySelector('#answer_field').value.trim();
+			RESULTS[current_question - 1] = res || null;
+			show_question(QUESTIONS[current_question - 1]);
+			alert('Your response is ' + (QUESTIONS[current_question - 1].solution.toLowerCase() === res.toLowerCase() ? 'correct' : 'incorrect'));
+		}
+
+		function showResults () {
+			document.body.innerHTML = `
+				<table>
+					<thead>
+						<tr>
+							<th> Q. No. </th>
+							<th> Solution </th>
+							<th> Your response </th>
+						</tr>
+					</thead>
+					<tbody>
+						${
+							QUESTIONS.map((q, i) => `<tr>
+								<td>${q.no}</td>
+								<td>${q.solution}</td>
+								<td>${
+										RESULTS[i]?.toLowerCase() === q.solution.toLowerCase() ? 'Correct' : ('Incorrect (' + RESULTS[i] + ')')
+									}</td>
+							</tr>`)
+							.join('')
+						}
+					</tbody>
+				</table>
+				<div> Score: ${
+						QUESTIONS
+							.map(({solution}, i) => RESULTS[i]?.toLowerCase() === solution.toLowerCase())
+							.reduce((a, b) => ~~a + ~~b)
+					}/${NUMBER_OF_QUESTIONS} </div>
+			`;
+		}
+	</script>
+	<script>
+		window.onload = async () => {
+			const questions = await (await fetch('./questions.json')).json();
+			questions.forEach(q => QUESTIONS.push(q));
+			show_question(QUESTIONS[current_question - 1]);
+		}
+	</script>
+</head>
+<body>
+	<div id="question_field">
+
+	</div>
+	<div id="navigation_buttons_container">
+		<button id="previous_question" onclick="previous_question()"> Previous </button>
+		<button id="next_question" onclick="next_question()"> Next </button>
+	</div>
+	<div>
+		<button id="results-button" onclick="showResults()">Submit</button>
+	</div>
+</body>
+</html>

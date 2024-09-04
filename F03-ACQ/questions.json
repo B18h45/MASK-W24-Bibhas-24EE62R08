@@ -1,0 +1,62 @@
+[
+	{
+		"no": 1,
+		"image": "image_01.webp",
+		"hint": "I am lost once again",
+		"solution": "Zoro"
+	},
+	{
+		"no": 2,
+		"image": "image_02.webp",
+		"hint": "Red haired I am",
+		"solution": "Shanks"
+	},
+	{
+		"no": 3,
+		"image": "image_03.webp",
+		"hint": "Ok... So what?",
+		"solution": "Saitama"
+	},
+	{
+		"no": 4,
+		"image": "image_04.webp",
+		"hint": "Say one word about Sasuke...",
+		"solution": "Sakura"
+	},
+	{
+		"no": 5,
+		"image": "image_05.webp",
+		"hint": "Dattebayo",
+		"solution": "Naruto"
+	},
+	{
+		"no": 6,
+		"image": "image_06.webp",
+		"hint": "The Honoured One",
+		"solution": "Gojo"
+	},
+	{
+		"no": 7,
+		"image": "image_07.webp",
+		"hint": "The crow of massacre",
+		"solution": "Itachi"
+	},
+	{
+		"no": 8,
+		"image": "image_08.webp",
+		"hint": "Feel ___, Know ___, Accept ____",
+		"solution": "Pain"
+	},
+	{
+		"no": 9,
+		"image": "image_09.webp",
+		"hint": "Ten Billion Percent Sure",
+		"solution": "Senku"
+	},
+	{
+		"no": 10,
+		"image": "image_10.webp",
+		"hint": "I am Atomic",
+		"solution": "Shadow"
+	}
+]
